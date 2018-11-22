@@ -161,7 +161,7 @@ function renderPicturesList(picsCount) {
   var fragment = document.createDocumentFragment();
   var list = [];
 
-  for (var i = 0; i < 25; i += 1) {
+  for (var i = 0; i < picsCount; i += 1) {
     list.push(createPictureObj(i));
     fragment.appendChild(renderPicture(list[i]));
   }
@@ -184,10 +184,10 @@ function renderBigPicture(item) {
   renderCommentsList(item.comments);
 }
 
-function setup(config) {
+function setup() {
   config.list = renderPicturesList(config.picsCount);
   clear();
   renderBigPicture(config.list[0]);
 }
 
-setup(config);
+setup();
