@@ -125,19 +125,19 @@ function createPictureObj(index) {
   return obj;
 }
 
-function renderPicture(picture) {
+function renderPicture(item) {
   var picNode = config.elements.template.picture.cloneNode(true);
-  picNode.querySelector('.picture__img').src = picture.url;
-  picNode.querySelector('.picture__comments').textContent = picture.comments.length;
-  picNode.querySelector('.picture__likes').textContent = picture.likes;
+  picNode.querySelector('.picture__img').src = item.url;
+  picNode.querySelector('.picture__comments').textContent = item.comments.length;
+  picNode.querySelector('.picture__likes').textContent = item.likes;
 
   return picNode;
 }
 
-function renderCommentItem(comment) {
+function renderCommentItem(item) {
   var comNode = config.elements.template.comment.cloneNode(true);
   var url = 'img/avatar-' + getRandomNumber(1, 6) + '.svg';
-  comNode.querySelector('.social__text').textContent = comment;
+  comNode.querySelector('.social__text').textContent = item;
   comNode.querySelector('.social__picture').src = url;
 
   return comNode;
@@ -157,11 +157,11 @@ function renderCommentsList(array) {
   container.appendChild(fragment);
 }
 
-function renderPicturesList(picsCount) {
+function renderPicturesList(count) {
   var fragment = document.createDocumentFragment();
   var list = [];
 
-  for (var i = 0; i < picsCount; i += 1) {
+  for (var i = 0; i < count; i += 1) {
     list.push(createPictureObj(i));
     fragment.appendChild(renderPicture(list[i]));
   }
