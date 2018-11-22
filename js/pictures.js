@@ -1,125 +1,193 @@
 'use strict';
 
-var myPics = {
-  picturesBlock: document.querySelector('.pictures'),
-  bigPictureRoot: document.querySelector('.big-picture'),
-  bigPicture: {
-    root: document.querySelector('.big-picture'),
-    img: document.querySelector('.big-picture__img img'),
-    likesCount: document.querySelector('.likes-count'),
-    commentsCount: document.querySelector('.comments-count'),
-    commentsBlock: document.querySelector('.social__comments'),
-    description: document.querySelector('.social__caption'),
-    commentCountWrapper: document.querySelector('.social__comment-count'),
-    commentLoader: document.querySelector('.comments-loader')
-  },
-  fragment: document.createDocumentFragment(),
-  fragment1: document.createDocumentFragment(),
-  template: {
-    picture: document.querySelector('#picture').content.querySelector('.picture'),
-    comment: document.querySelector('#comment').content.querySelector('.social__comment'),
-  },
-  list: [],
+// config definitions block
+var config = {
   likesNumberUpper: 200,
   likesNumberLower: 15,
-  commentsArray: [
-    'Всё отлично!',
-    'В целом всё неплохо. Но не всё.',
-    'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
-    'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
-    'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-    'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
-  ],
-  descriptionsArray: [
-    'Тестим новую камеру!',
-    'Затусили с друзьями на море',
-    'Как же круто тут кормят',
-    'Отдыхаем...',
-    'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......',
-    'Вот это тачка!'
-  ],
-  getRandomNumber: function (from, to) {
-    return Math.floor(Math.random() * (to - from) + from);
+  picsCount: 25,
+  list: [],
+  data: {
+    comments: [
+      'Всё отлично!',
+      'В целом всё неплохо. Но не всё.',
+      'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+      'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+      'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+      'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
+    ],
+    descriptions: [
+      'Тестим новую камеру!',
+      'Затусили с друзьями на море',
+      'Как же круто тут кормят',
+      'Отдыхаем...',
+      'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......',
+      'Вот это тачка!'
+    ]
   },
-  getRandomElement: function (array) {
-    return array[Math.floor(Math.random() * array.length)];
-  },
-  getUrl: function (index) {
-    var temp = index + 1;
-    return ('photos/' + temp + '.jpg');
-  },
-  getLikesNumber: function () {
-    return this.getRandomNumber(this.likesNumberLower, this.likesNumberUpper);
-  },
-  getComment: function () {
-    var coin = Math.random();
-    return coin > 0.5 ? this.getRandomElement(this.commentsArray) : this.getRandomElement(this.commentsArray) + ' ' + this.getRandomElement(this.commentsArray);
-  },
-  getCommentList: function () {
-    var max = 3;
-    var min = 1;
-    var array = [];
-    var count = this.getRandomNumber(min, max + 1);
-    for (var i = 0; i < count; i += 1) {
-      array.push(this.getComment());
+  selectors: {
+    picturesBlock: '.pictures',
+    bigPicture: {
+      root: '.big-picture',
+      img: '.big-picture__img img',
+      likesCount: '.likes-count',
+      commentsCount: '.comments-count',
+      commentsBlock: '.social__comments',
+      description: '.social__caption',
+      commentsCountWrapper: '.social__comment-count',
+      commentsLoader: '.comments-loader'
+    },
+    template: {
+      picture: {
+        root: '#picture',
+        cont: '.picture'
+      },
+      comment: {
+        root: '#comment',
+        cont: '.social__comment'
+      }
     }
-    return array;
   },
-  getDescription: function () {
-    return this.getRandomElement(this.descriptionsArray);
-  },
-  createPictureObj: function (index) {
-    var obj = {};
-    obj.url = this.getUrl(index);
-    obj.likes = this.getLikesNumber();
-    obj.comments = this.getCommentList();
-    obj.description = this.getDescription();
-    return obj;
-  },
-  renderPicture: function (picture) {
-    var picNode = this.template.picture.cloneNode(true);
-    picNode.querySelector('.picture__img').src = picture.url;
-    picNode.querySelector('.picture__comments').textContent = picture.comments.length;
-    picNode.querySelector('.picture__likes').textContent = picture.likes;
-
-    return picNode;
-  },
-  renderCommentItem: function (comment) {
-    var comNode = this.template.comment.cloneNode(true);
-    var url = 'img/avatar-' + this.getRandomNumber(1, 7) + '.svg';
-    comNode.querySelector('.social__text').textContent = comment;
-    comNode.querySelector('.social__picture').src = url;
-
-    return comNode;
-  },
-  renderCommentList: function (array, fragment) {
-    var container = this.bigPicture.commentsBlock;
-
-    while (container.firstChild) {
-      container.firstChild.remove();
-    }
-
-    for (var i = 0; i < array.length; i += 1) {
-      fragment.appendChild(this.renderCommentItem(array[i]));
-    }
-    container.appendChild(fragment);
-  }
+  elements: {}
 };
 
-for (var i = 0; i < 25; i += 1) {
-  myPics.list.push(myPics.createPictureObj(i));
-  myPics.fragment.appendChild(myPics.renderPicture(myPics.list[i]));
+config.elements.picturesBlock = document.querySelector(config.selectors.picturesBlock);
+config.elements.bigPicture = (function () {
+  var obj = {};
+  for (var selector in config.selectors.bigPicture) {
+    if (config.selectors.bigPicture.hasOwnProperty(selector)) {
+      obj[selector] = document.querySelector(config.selectors.bigPicture[selector]);
+    }
+  }
+  return obj;
+})();
+
+config.elements.template = (function () {
+  var obj = {};
+  var temp1;
+  var temp2;
+  for (var selector in config.selectors.template) {
+    if (config.selectors.template.hasOwnProperty(selector)) {
+      temp2 = config.selectors.template[selector].cont;
+      temp1 = config.selectors.template[selector].root;
+      obj[selector] = document.querySelector(temp1)
+                              .content
+                              .querySelector(temp2);
+    }
+  }
+  return obj;
+})();
+
+// functions definitions block
+function getRandomNumber(from, to) {
+  return Math.round(Math.random() * (to - from) + from);
 }
 
-myPics.picturesBlock.appendChild(myPics.fragment);
-myPics.bigPicture.root.classList.remove('hidden');
+function getRandomElement(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
 
-myPics.bigPicture.img.src = myPics.list[0].url;
-myPics.bigPicture.likesCount.textContent = myPics.list[0].likes;
-myPics.bigPicture.commentsCount.textContent = myPics.list[0].comments.length;
+function getUrl(index) {
+  return ('photos/' + (index + 1) + '.jpg');
+}
 
-myPics.renderCommentList(myPics.list[0].comments, myPics.fragment1);
+function getLikesNumber() {
+  return getRandomNumber(config.likesNumberLower, config.likesNumberUpper);
+}
 
-myPics.bigPicture.description.textContent = myPics.list[0].description;
-myPics.bigPicture.commentCountWrapper.classList.add('visually-hidden');
-myPics.bigPicture.commentLoader.classList.add('visually-hidden');
+function getComment() {
+  var coin = Math.random();
+  var array = config.data.comments;
+  return coin > 0.5 ? getRandomElement(array) : getRandomElement(array) + ' ' + getRandomElement(array);
+}
+
+function getCommentList() {
+  var max = 3;
+  var min = 1;
+  var array = [];
+  var count = getRandomNumber(min, max);
+  for (var i = 0; i < count; i += 1) {
+    array.push(getComment());
+  }
+  return array;
+}
+
+function getDescription() {
+  return getRandomElement(config.data.descriptions);
+}
+
+function createPictureObj(index) {
+  var obj = {};
+  obj.url = getUrl(index);
+  obj.likes = getLikesNumber();
+  obj.comments = getCommentList();
+  obj.description = getDescription();
+
+  return obj;
+}
+
+function renderPicture(picture) {
+  var picNode = config.elements.template.picture.cloneNode(true);
+  picNode.querySelector('.picture__img').src = picture.url;
+  picNode.querySelector('.picture__comments').textContent = picture.comments.length;
+  picNode.querySelector('.picture__likes').textContent = picture.likes;
+
+  return picNode;
+}
+
+function renderCommentItem(comment) {
+  var comNode = config.elements.template.comment.cloneNode(true);
+  var url = 'img/avatar-' + getRandomNumber(1, 6) + '.svg';
+  comNode.querySelector('.social__text').textContent = comment;
+  comNode.querySelector('.social__picture').src = url;
+
+  return comNode;
+}
+
+function renderCommentsList(array) {
+  var container = config.elements.bigPicture.commentsBlock;
+  var fragment = document.createDocumentFragment();
+
+  while (container.firstChild) {
+    container.firstChild.remove();
+  }
+
+  for (var i = 0; i < array.length; i += 1) {
+    fragment.appendChild(renderCommentItem(array[i]));
+  }
+  container.appendChild(fragment);
+}
+
+function renderPicturesList(picsCount) {
+  var fragment = document.createDocumentFragment();
+  var list = [];
+
+  for (var i = 0; i < 25; i += 1) {
+    list.push(createPictureObj(i));
+    fragment.appendChild(renderPicture(list[i]));
+  }
+  config.elements.picturesBlock.appendChild(fragment);
+  return list;
+}
+
+function clear() {
+  config.elements.bigPicture.root.classList.remove('hidden');
+}
+
+function renderBigPicture(item) {
+  var BP = config.elements.bigPicture;
+  BP.img.src = item.url;
+  BP.likesCount.textContent = item.likes;
+  BP.commentsCount.textContent = item.comments.length;
+  BP.description.textContent = item.description;
+  BP.commentsCountWrapper.classList.add('visually-hidden');
+  BP.commentsLoader.classList.add('visually-hidden');
+  renderCommentsList(item.comments);
+}
+
+function setup(config) {
+  config.list = renderPicturesList(config.picsCount);
+  clear();
+  renderBigPicture(config.list[0]);
+}
+
+setup(config);
