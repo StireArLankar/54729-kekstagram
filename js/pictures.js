@@ -201,14 +201,10 @@ function renderPicturesList(count) {
 
   for (var i = 0; i < count; i += 1) {
     list.push(createPictureObj(i));
-    fragment.appendChild(renderPicture(list[i]));
+    list[i].DOMElement = renderPicture(list[i]);
+    fragment.appendChild(list[i].DOMElement);
   }
   config.elements.picturesBlock.root.appendChild(fragment);
-
-  list.forEach(function (item, index) {
-    var j = index + 2;
-    item.DOMElement = config.elements.picturesBlock.root.children[j];
-  });
 
   return list;
 }
