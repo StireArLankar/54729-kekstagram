@@ -392,12 +392,12 @@ function openImgUpload() {
     }
   }
 
-  function onInputChange() {
+  function onFieldInput() {
     block.hashtag.setCustomValidity('');
     block.comment.setCustomValidity('');
   }
 
-  function onFormSubmit(submitEvt) {
+  function onFieldBlur() {
     var hashtags = block.hashtag.value.toLowerCase().split(' ');
     var comments = block.comment.value;
     var i = 0;
@@ -408,33 +408,28 @@ function openImgUpload() {
     }
 
     if (hashtags.length >= config.maxHashtags) {
-      submitEvt.preventDefault();
       block.hashtag.setCustomValidity('Не более 5 хэш-тегов!');
       return;
     }
 
     for (i = 0; i < hashtags.length; i += 1) {
       if (hashtags[i][0] !== '#') {
-        submitEvt.preventDefault();
         block.hashtag.setCustomValidity('Хэш-теги должны начинаться с #!');
         return;
       }
 
       if (hashtags[i].length === 1) {
-        submitEvt.preventDefault();
         block.hashtag.setCustomValidity('Хэш-теги должны содержать что-то помимо #!');
         return;
       }
 
       if (hashtags[i].length >= config.maxHashtagLength) {
-        submitEvt.preventDefault();
         block.hashtag.setCustomValidity('Хэш-теги не должны быть длиннее 20 символов!');
         return;
       }
 
       for (j = i + 1; j < hashtags.length; j += 1) {
         if (hashtags[j] === hashtags[i]) {
-          submitEvt.preventDefault();
           block.hashtag.setCustomValidity('Без повторяющихся хэш-тегов!');
           return;
         }
@@ -442,7 +437,6 @@ function openImgUpload() {
     }
 
     if (comments.length >= config.maxCommentLength) {
-      submitEvt.preventDefault();
       block.comments.setCustomValidity('Не более 140 символов!');
       return;
     }
@@ -451,11 +445,16 @@ function openImgUpload() {
   function closeImgUpload() {
     block.overlay.classList.add('hidden');
     document.removeEventListener('keydown', onImgUploadEscPress);
-    block.form.removeEventListener('submit', onFormSubmit);
+
+    block.hashtag.removeEventListener('blur', onFieldBlur);
+    block.comment.removeEventListener('blur', onFieldBlur);
+
     block.hashtag.removeEventListener('keydown', onInputEscPress);
     block.comment.removeEventListener('keydown', onInputEscPress);
-    block.hashtag.removeListener('change', onInputChange);
-    block.comment.removeListener('change', onInputChange);
+
+    block.hashtag.removeListener('input', onFieldInput);
+    block.comment.removeListener('input', onFieldInput);
+
     block.close.removeEventListener('click', closeImgUpload);
     block.handler.removeEventListener('mousedown', onSliderDrag);
     block.scaleControlUp.removeEventListener('click', onImageGrow);
@@ -466,11 +465,16 @@ function openImgUpload() {
 
   block.overlay.classList.remove('hidden');
   document.addEventListener('keydown', onImgUploadEscPress);
-  block.form.addEventListener('submit', onFormSubmit);
+
+  block.hashtag.addEventListener('blur', onFieldBlur);
+  block.comment.addEventListener('blur', onFieldBlur);
+
   block.hashtag.addEventListener('keydown', onInputEscPress);
   block.comment.addEventListener('keydown', onInputEscPress);
-  block.hashtag.addEventListener('change', onInputChange);
-  block.comment.addEventListener('change', onInputChange);
+
+  block.hashtag.addEventListener('input', onFieldInput);
+  block.comment.addEventListener('input', onFieldInput);
+
   block.close.addEventListener('click', closeImgUpload);
   block.handler.addEventListener('mousedown', onSliderDrag);
   block.scaleControlUp.addEventListener('click', onImageGrow);
