@@ -449,11 +449,19 @@ function openImgUpload() {
     block.hashtag.removeEventListener('blur', onFieldBlur);
     block.comment.removeEventListener('blur', onFieldBlur);
 
+    /*function initSlider(handler, block) {
+      addEventListener('keydown', function (evt) {
+        return onSliderDrag(evt, handler, block)
+      });
+    }
+
+    var ratio = initSlider(handler, block);*/
+
     block.hashtag.removeEventListener('keydown', onInputEscPress);
     block.comment.removeEventListener('keydown', onInputEscPress);
 
-    block.hashtag.removeListener('input', onFieldInput);
-    block.comment.removeListener('input', onFieldInput);
+    block.hashtag.removeEventListener('input', onFieldInput);
+    block.comment.removeEventListener('input', onFieldInput);
 
     block.close.removeEventListener('click', closeImgUpload);
     block.handler.removeEventListener('mousedown', onSliderDrag);
@@ -482,7 +490,7 @@ function openImgUpload() {
   block.effectsList.addEventListener('change', onRadioChange);
   block.close.focus();
   block.img.style.transform = 'scale(1)';
-  changeImageEffect(5);
+  changeImageEffect(0);
 }
 
 function setup() {
