@@ -449,14 +449,6 @@ function openImgUpload() {
     block.hashtag.removeEventListener('blur', onFieldBlur);
     block.comment.removeEventListener('blur', onFieldBlur);
 
-    /*function initSlider(handler, block) {
-      addEventListener('keydown', function (evt) {
-        return onSliderDrag(evt, handler, block)
-      });
-    }
-
-    var ratio = initSlider(handler, block);*/
-
     block.hashtag.removeEventListener('keydown', onInputEscPress);
     block.comment.removeEventListener('keydown', onInputEscPress);
 
