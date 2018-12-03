@@ -48,6 +48,7 @@ var config = {
       slider: '.effect-level',
       handler: '.effect-level__pin',
       depth: '.effect-level__depth',
+      effectValue: '.effect-level__value',
       hashtag: '.text__hashtags',
       comment: '.text__description',
       close: '.img-upload__cancel'
@@ -326,6 +327,7 @@ function openImgUpload() {
 
     block.depth.style.width = '100%';
     block.handler.style.left = '100%';
+    block.effectValue.value = 100;
     block.img.style.filter = filter.prefix + '(' + (1.0 * (filter.max - filter.min) + filter.min) + filter.postfix + ')';
   }
 
@@ -352,6 +354,7 @@ function openImgUpload() {
       }
 
       ratio = passedX / parentWidth;
+      block.effectValue.value = Math.round(ratio * 100);
 
       pressEvt.target.style.left = (ratio * 100) + '%';
       block.depth.style.width = (ratio * 100) + '%';
