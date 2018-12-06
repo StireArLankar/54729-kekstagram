@@ -8,6 +8,7 @@
     maxHashtags: 5,
     maxHashtagLength: 20,
     maxCommentLength: 140,
+    commentsAmount: 5,
     list: [],
     keyCode: {
       esc: 27,
@@ -64,6 +65,10 @@
         commentsCountWrapper: '.social__comment-count',
         commentsLoader: '.comments-loader',
         commentInput: '.social__footer-text'
+      },
+      body: {
+        root: 'body',
+        main: 'main'
       }
     },
     template: {
@@ -74,6 +79,14 @@
       comment: {
         root: '#comment',
         cont: '.social__comment'
+      },
+      succes: {
+        root: '#success',
+        cont: '.success'
+      },
+      error: {
+        root: '#error',
+        cont: '.error'
       }
     },
     elements: {}

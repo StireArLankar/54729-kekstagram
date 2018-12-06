@@ -58,7 +58,7 @@
 
   function renderCommentItem(item) {
     var comNode = config.elements.template.comment.cloneNode(true);
-    comNode.querySelector('.social__text').textContent = item.text;
+    comNode.querySelector('.social__text').textContent = item.message;
     comNode.querySelector('.social__picture').src = item.avatar;
 
     return comNode;
@@ -67,18 +67,19 @@
   function renderCommentsList(array) {
     var container = config.elements.bigPicture.commentsBlock;
     var fragment = document.createDocumentFragment();
+    var len = array.length > 5 ? 5 : array.length;
 
     while (container.firstChild) {
       container.firstChild.remove();
     }
 
-    for (var i = 0; i < array.length; i += 1) {
+    for (var i = 0; i < len; i += 1) {
       fragment.appendChild(renderCommentItem(array[i]));
     }
     container.appendChild(fragment);
   }
 
-  function renderPicturesList(count) {
+  function renderMockList(count) {
     var fragment = document.createDocumentFragment();
     var list = [];
 
@@ -92,6 +93,20 @@
     return list;
   }
 
+  function renderPicturesList(list) {
+    var fragment = document.createDocumentFragment();
+    var len = list.length;
+
+    for (var i = 0; i < len; i += 1) {
+      list[i].DOMElement = renderPicture(list[i]);
+      fragment.appendChild(list[i].DOMElement);
+    }
+    config.elements.picturesBlock.root.appendChild(fragment);
+
+    return list;
+  }
+
+  gallery.renderMockList = renderMockList;
   gallery.renderPicturesList = renderPicturesList;
   gallery.renderCommentsList = renderCommentsList;
   window.gallery = gallery;
