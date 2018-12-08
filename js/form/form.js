@@ -5,6 +5,7 @@
   var config = window.config;
   var utils = window.utils;
   var formImage = window.formImage;
+  var formImageResize = window.formImageResize;
   var backend = window.backend;
   var postResult = window.postResult;
   var url = 'https://js.dump.academy/kekstagram';
@@ -31,6 +32,13 @@
     reader.readAsDataURL(input.files[0]);
   }
 
+  function resizeImg(scale) {
+    var block = config.elements.imgUpload;
+
+    block.scaleControlValue.value = scale + '%';
+    block.img.style.transform = 'scale(' + (scale / 100) + ')';
+  }
+
   function close() {
     var block = config.elements.imgUpload;
 
@@ -51,7 +59,8 @@
 
     block.close.addEventListener('click', close);
     block.close.focus();
-    block.img.style.transform = 'scale(1)';
+
+    formImageResize.reset(block.scaleControlValue, resizeImg);
     formImage.changeImageEffect(0);
   }
 

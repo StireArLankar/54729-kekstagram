@@ -8,11 +8,17 @@
     maxHashtags: 5,
     maxHashtagLength: 20,
     maxCommentLength: 140,
-    commentsAmount: 5,
+    commentsStep: 5,
     list: [],
     keyCode: {
       esc: 27,
       enter: 13
+    },
+    scale: {
+      start: 100,
+      max: 100,
+      min: 25,
+      step: 25
     },
     data: {
       comments: [

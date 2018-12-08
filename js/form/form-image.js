@@ -4,6 +4,7 @@
   var formImage = {};
   var config = window.config;
   var formSlider = window.formSlider;
+  var formImageResize = window.formImageResize;
   var block = config.elements.imgUpload;
   var handler = block.handler;
   var bar = block.depth;
@@ -106,29 +107,15 @@
     block.img.style.filter = filter.prefix + '(' + (ratio * (filter.max - filter.min) + filter.min) + filter.postfix + ')';
   }
 
-  function onImageGrow() {
-    var scaleSTR = block.scaleControlValue.value.split(-1);
-    var scale = parseFloat(scaleSTR);
-
-    scale = (scale > 75) ? 100 : (scale + 25);
-    block.scaleControlValue.value = scale + '%';
-    block.img.style.transform = 'scale(' + (scale / 100) + ')';
-  }
-
-  function onImageShrink() {
-    var scaleSTR = block.scaleControlValue.value.split(-1);
-    var scale = parseFloat(scaleSTR);
-
-    scale = (scale < 50) ? 25 : (scale - 25);
-    block.scaleControlValue.value = scale + '%';
+  function resizeImg(scale) {
     block.img.style.transform = 'scale(' + (scale / 100) + ')';
   }
 
   block.effectsList.addEventListener('change', onRadioChange);
+
   formSlider.init(handler, bar, input, changeEffectLevel);
 
-  block.scaleControlUp.addEventListener('click', onImageGrow);
-  block.scaleControlDown.addEventListener('click', onImageShrink);
+  formImageResize.init(block.scaleControlUp, block.scaleControlDown, block.scaleControlValue, resizeImg);
 
   formImage.changeImageEffect = changeImageEffect;
   window.formImage = formImage;

@@ -64,10 +64,10 @@
     return comNode;
   }
 
-  function renderCommentsList(array) {
+  function renderCommentsList(array, max) {
     var container = config.elements.bigPicture.commentsBlock;
     var fragment = document.createDocumentFragment();
-    var len = array.length > 5 ? 5 : array.length;
+    var len = array.length > max ? max : array.length;
 
     while (container.firstChild) {
       container.firstChild.remove();

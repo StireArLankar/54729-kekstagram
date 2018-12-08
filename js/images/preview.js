@@ -6,34 +6,45 @@
   var gallery = window.gallery;
   var utils = window.utils;
   var bodyElem = config.elements.body.root;
+  var BP = config.elements.bigPicture;
 
   function onEscPress(escEvt) {
     utils.isEscEvent(escEvt, close);
   }
 
   function onInputEscPress(escEvt) {
-    utils.isEscEvent(escEvt, stopProp);
-  }
-
-  function stopProp(evt) {
-    evt.stopPropagation();
-  }
-
-  function close(evt) {
-    var BP = config.elements.bigPicture;
-
-    bodyElem.classList.remove('modal-open');
-
-    evt.preventDefault();
-    BP.root.classList.add('hidden');
-    BP.close.removeEventListener('click', close);
-    document.removeEventListener('keydown', onEscPress);
+    utils.isEscEvent(escEvt, utils.stopProp);
   }
 
   function open(item) {
-    var BP = config.elements.bigPicture;
     var len = item.comments.length;
-    var maxLen = config.commentsAmount;
+    var maxLen = 0;
+
+    function loadComments() {
+      maxLen = (maxLen + config.commentsStep > len) ? len : (maxLen + config.commentsStep);
+      gallery.renderCommentsList(item.comments, maxLen);
+      renderCommentsNumber();
+    }
+
+    function renderCommentsNumber() {
+      if (len > maxLen) {
+        BP.commentsCountWrapper.innerHTML = maxLen + ' из <span class="comments-count">' + len + '</span>  комментариев';
+      } else {
+        BP.commentsCountWrapper.innerHTML = len + ' из <span class="comments-count">' + len + '</span>  комментариев';
+        BP.commentsLoader.classList.add('visually-hidden');
+      }
+    }
+
+    function close(evt) {
+      bodyElem.classList.remove('modal-open');
+
+      BP.commentsLoader.removeEventListener('click', loadComments);
+
+      evt.preventDefault();
+      BP.root.classList.add('hidden');
+      BP.close.removeEventListener('click', close);
+      document.removeEventListener('keydown', onEscPress);
+    }
 
     bodyElem.classList.add('modal-open');
 
@@ -43,14 +54,9 @@
     BP.description.textContent = item.description;
     BP.commentsLoader.classList.remove('visually-hidden');
 
-    if (len >= maxLen) {
-      BP.commentsCountWrapper.innerHTML = maxLen + ' из <span class="comments-count">' + len + '</span>  комментариев';
-    } else {
-      BP.commentsCountWrapper.innerHTML = len + ' из <span class="comments-count">' + len + '</span>  комментариев';
-      BP.commentsLoader.classList.add('visually-hidden');
-    }
+    loadComments();
+    BP.commentsLoader.addEventListener('click', loadComments);
 
-    gallery.renderCommentsList(item.comments);
     BP.root.classList.remove('hidden');
 
     BP.commentInput.addEventListener('keydown', onInputEscPress);

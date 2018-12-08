@@ -6,11 +6,7 @@
   var block = config.elements.imgUpload;
 
   function onInputEscPress(escEvt) {
-    utils.isEscEvent(escEvt, stopProp);
-  }
-
-  function stopProp(evt) {
-    evt.stopPropagation();
+    utils.isEscEvent(escEvt, utils.stopProp);
   }
 
   function onFieldInput() {

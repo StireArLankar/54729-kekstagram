@@ -10,11 +10,14 @@
     var fragment = document.createDocumentFragment();
     var block = config.elements.template[result].cloneNode(true);
     var btn = block.querySelectorAll('button');
+    var inner = block.children[0];
     fragment.appendChild(block);
 
     main.appendChild(fragment);
 
     btn[0].focus();
+
+    inner.addEventListener('click', utils.stopProp);
     document.addEventListener('click', close);
     document.addEventListener('keydown', onEscPress);
 
@@ -30,7 +33,7 @@
         btn[j].removeEventListener('click', close);
       }
 
-      main.lastChild.remove();
+      block.remove();
     }
 
     function onEscPress(escEvt) {
