@@ -8,10 +8,6 @@
   var bodyElem = config.elements.body.root;
   var BP = config.elements.bigPicture;
 
-  function onEscPress(escEvt) {
-    utils.isEscEvent(escEvt, close);
-  }
-
   function onInputEscPress(escEvt) {
     utils.isEscEvent(escEvt, utils.stopProp);
   }
@@ -33,6 +29,10 @@
         BP.commentsCountWrapper.innerHTML = len + ' из <span class="comments-count">' + len + '</span>  комментариев';
         BP.commentsLoader.classList.add('visually-hidden');
       }
+    }
+
+    function onEscPress(escEvt) {
+      utils.isEscEvent(escEvt, close);
     }
 
     function close(evt) {
