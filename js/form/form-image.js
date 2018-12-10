@@ -11,99 +11,31 @@
   var input = block.effectValue;
   var filter = {};
 
-  filter.prefix = '';
-  filter.max = 0;
-  filter.min = 0;
-  filter.postfix = '';
-  block.img.style.filter = '';
-
   function onRadioChange(radioEvt) {
-    var target = radioEvt.target;
-    for (var i = 0; i < block.effects.length; i += 1) {
-      if (target === block.effects[i]) {
-        changeImageEffect(i);
-      }
-    }
+    changeImageEffect(radioEvt.target.value);
   }
 
-  function changeImageEffect(index) {
-    block.img.className = '';
-
-    switch (index) {
-      case 0:
-        block.img.classList.add('effects__preview--none');
-        block.slider.classList.add('hidden');
-        break;
-      case 1:
-        block.img.classList.add('effects__preview--chrome');
-        block.slider.classList.remove('hidden');
-        break;
-      case 2:
-        block.img.classList.add('effects__preview--sepia');
-        block.slider.classList.remove('hidden');
-        break;
-      case 3:
-        block.img.classList.add('effects__preview--marvin');
-        block.slider.classList.remove('hidden');
-        break;
-      case 4:
-        block.img.classList.add('effects__preview--phobos');
-        block.slider.classList.remove('hidden');
-        break;
-      case 5:
-        block.img.classList.add('effects__preview--heat');
-        block.slider.classList.remove('hidden');
-        break;
+  function changeImageEffect(value) {
+    while (block.img.classList.length > 0) {
+      block.img.classList.remove(block.img.classList.item(0));
     }
 
-    filter.name = block.img.classList[0];
+    block.img.classList.add('effects__preview--' + value);
 
-    switch (filter.name) {
-      case 'effects__preview--none':
-        filter.prefix = '';
-        filter.max = 0;
-        filter.min = 0;
-        filter.postfix = '';
-        block.img.style.filter = '';
-        break;
-      case 'effects__preview--chrome':
-        filter.prefix = 'grayscale';
-        filter.max = 1;
-        filter.min = 0;
-        filter.postfix = '';
-        break;
-      case 'effects__preview--sepia':
-        filter.prefix = 'sepia';
-        filter.max = 1;
-        filter.min = 0;
-        filter.postfix = '';
-        break;
-      case 'effects__preview--marvin':
-        filter.prefix = 'invert';
-        filter.max = 100;
-        filter.min = 0;
-        filter.postfix = '%';
-        break;
-      case 'effects__preview--phobos':
-        filter.prefix = 'blur';
-        filter.max = 3;
-        filter.min = 1;
-        filter.postfix = 'px';
-        break;
-      case 'effects__preview--heat':
-        filter.prefix = 'brightness';
-        filter.max = 3;
-        filter.min = 1;
-        filter.postfix = '';
-        break;
+    filter = config.filter[value];
+
+    if (value === 'none') {
+      block.slider.classList.add('hidden');
+      block.img.style.filter = '';
+    } else {
+      block.slider.classList.remove('hidden');
+      block.img.style.filter = filter.prefix + '(' + (1.0 * (filter.max - filter.min) + filter.min) + filter.postfix + ')';
     }
 
     formSlider.reset(handler, bar, input);
-    block.img.style.filter = filter.prefix + '(' + (1.0 * (filter.max - filter.min) + filter.min) + filter.postfix + ')';
   }
 
-  function changeEffectLevel() {
-    var ratio = input.value / 100;
+  function changeEffectLevel(ratio) {
     block.img.style.filter = filter.prefix + '(' + (ratio * (filter.max - filter.min) + filter.min) + filter.postfix + ')';
   }
 

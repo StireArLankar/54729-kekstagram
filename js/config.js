@@ -10,6 +10,44 @@
     maxCommentLength: 140,
     commentsStep: 5,
     list: [],
+    filter: {
+      none: {
+        prefix: '',
+        max: 0,
+        min: 0,
+        postfix: ''
+      },
+      chrome: {
+        prefix: 'grayscale',
+        max: 1,
+        min: 0,
+        postfix: ''
+      },
+      sepia: {
+        prefix: 'sepia',
+        max: 1,
+        min: 0,
+        postfix: ''
+      },
+      marvin: {
+        prefix: 'invert',
+        max: 100,
+        min: 0,
+        postfix: '%'
+      },
+      phobos: {
+        prefix: 'blur',
+        max: 3,
+        min: 1,
+        postfix: 'px'
+      },
+      heat: {
+        prefix: 'brightness',
+        max: 3,
+        min: 1,
+        postfix: ''
+      }
+    },
     keyCode: {
       esc: 27,
       enter: 13
