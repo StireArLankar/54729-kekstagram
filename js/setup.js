@@ -30,6 +30,7 @@
   function onLoad(response) {
     config.list = gallery.renderPicturesList(response);
     setTimeout(addPreviewListeners(), 0);
+    config.elements.imgFilters.root.classList.remove('img-filters--inactive');
   }
 
   setup();

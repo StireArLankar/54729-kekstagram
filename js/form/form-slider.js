@@ -1,7 +1,34 @@
 'use strict';
 
 (function () {
+  var utils = window.utils;
   var formSlider = {};
+
+  function onSliderKeydown(evt, handler, bar, input, action) {
+    var ratio;
+
+    utils.isRightEvent(evt, function () {
+      evt.preventDefault();
+      ratio = parseInt(input.value, 10);
+      ratio = (ratio > 99) ? ratio : (ratio + 1);
+      changeValues();
+    });
+
+
+    utils.isLeftEvent(evt, function () {
+      evt.preventDefault();
+      ratio = parseInt(input.value, 10);
+      ratio = (ratio < 1) ? ratio : (ratio - 1);
+      changeValues();
+    });
+
+    function changeValues() {
+      input.value = Math.round(ratio);
+      handler.style.left = (ratio) + '%';
+      bar.style.width = (ratio) + '%';
+      action(ratio / 100);
+    }
+  }
 
   function onSliderDrag(pressEvt, handler, bar, input, action) {
     pressEvt.preventDefault();
@@ -46,6 +73,9 @@
   formSlider.init = function (handler, bar, input, action) {
     handler.addEventListener('mousedown', function (pressEvt) {
       onSliderDrag(pressEvt, handler, bar, input, action);
+    });
+    handler.addEventListener('keydown', function (keyEvt) {
+      onSliderKeydown(keyEvt, handler, bar, input, action);
     });
   };
 

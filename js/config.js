@@ -2,6 +2,7 @@
 
 (function () {
   var config = {
+    updateDelay: 500,
     likesNumberUpper: 200,
     likesNumberLower: 15,
     picsCount: 25,
@@ -50,7 +51,9 @@
     },
     keyCode: {
       esc: 27,
-      enter: 13
+      enter: 13,
+      left: 37,
+      right: 39
     },
     scale: {
       start: 100,
@@ -77,6 +80,12 @@
       ]
     },
     selectors: {
+      imgFilters: {
+        root: '.img-filters',
+        popular: '#filter-popular',
+        new: '#filter-new',
+        discussed: '#filter-discussed'
+      },
       picturesBlock: {
         root: '.pictures'
       },
@@ -136,41 +145,32 @@
     elements: {}
   };
 
-  config.elements = (function () {
-    var obj = {};
-    for (var block in config.selectors) {
-      if (config.selectors.hasOwnProperty(block)) {
-        obj[block] = (function () {
-          var object = {};
-          for (var selector in config.selectors[block]) {
-            if (config.selectors[block].hasOwnProperty(selector)) {
-              object[selector] = document.querySelector(config.selectors[block][selector]);
-            }
-          }
-          return object;
-        })();
-      }
-    }
-    return obj;
-  })();
+  function findBlocks(selectors, action) {
+    var keys = Object.keys(selectors);
+    return keys.reduce(function (obj, key) {
+      obj[key] = action(selectors[key]);
+      return obj;
+    }, {});
+  }
+
+  function findDOMElements(block) {
+    var keys = Object.keys(block);
+    return keys.map(function (key) {
+      return document.querySelector(block[key]);
+    }).reduce(function (obj, element, i) {
+      obj[keys[i]] = element;
+      return obj;
+    }, {});
+  }
+
+  function findTemplateContent(block) {
+    return document.querySelector(block.root).content.querySelector(block.cont);
+  }
+
+  config.elements = findBlocks(config.selectors, findDOMElements);
+  config.elements.template = findBlocks(config.template, findTemplateContent);
 
   config.elements.imgUpload.effects = document.querySelectorAll('.effects__radio');
-
-  config.elements.template = (function () {
-    var obj = {};
-    var temp1;
-    var temp2;
-    for (var selector in config.template) {
-      if (config.template.hasOwnProperty(selector)) {
-        temp2 = config.template[selector].cont;
-        temp1 = config.template[selector].root;
-        obj[selector] = document.querySelector(temp1)
-                                .content
-                                .querySelector(temp2);
-      }
-    }
-    return obj;
-  })();
 
   window.config = config;
 })();

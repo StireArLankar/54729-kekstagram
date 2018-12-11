@@ -53,7 +53,7 @@
     document.addEventListener('keydown', onEscPress);
 
     block.close.addEventListener('click', close);
-    block.close.focus();
+    block.scaleControlDown.focus();
 
     formImageResize.reset(block.scaleControlValue, resizeImg);
     formImage.changeImageEffect('none');

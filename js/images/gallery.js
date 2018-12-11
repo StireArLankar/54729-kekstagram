@@ -95,19 +95,40 @@
 
   function renderPicturesList(list) {
     var fragment = document.createDocumentFragment();
-    var len = list.length;
 
-    for (var i = 0; i < len; i += 1) {
-      list[i].DOMElement = renderPicture(list[i]);
-      fragment.appendChild(list[i].DOMElement);
-    }
+    list.forEach(function (item) {
+      item.DOMElement = renderPicture(item);
+      fragment.appendChild(item.DOMElement);
+    });
+
     config.elements.picturesBlock.root.appendChild(fragment);
 
     return list;
   }
 
+  function updatePicturesList(list) {
+    var container = config.elements.picturesBlock.root;
+    var fragment = document.createDocumentFragment();
+    var i = 0;
+
+    while (container.children[i]) {
+      if (container.children[i].classList.contains('picture')) {
+        container.children[i].remove();
+      } else {
+        i += 1;
+      }
+    }
+
+    list.forEach(function (item) {
+      fragment.appendChild(item.DOMElement);
+    });
+
+    container.appendChild(fragment);
+  }
+
   gallery.renderMockList = renderMockList;
   gallery.renderPicturesList = renderPicturesList;
+  gallery.updatePicturesList = updatePicturesList;
   gallery.renderCommentsList = renderCommentsList;
   window.gallery = gallery;
 })();
