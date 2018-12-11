@@ -18,8 +18,13 @@
     }
   }
 
+  function stopProp(evt) {
+    evt.stopPropagation();
+  }
+
   utils.getRandomNumber = getRandomNumber;
   utils.getRandomElement = getRandomElement;
   utils.isEscEvent = isEscEvent;
+  utils.stopProp = stopProp;
   window.utils = utils;
 })();

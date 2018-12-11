@@ -765,6 +765,10 @@ main {
   border-radius: 5px;
 }
 
+.text--invalid {
+  border: 2px solid red;
+}
+
 
 /**
  * Кнопка для отправки изображения
