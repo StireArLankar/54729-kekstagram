@@ -14,13 +14,12 @@
     evt.target.classList.remove('text--invalid');
   }
 
-  function onFieldBlur() {
+  function onHashtagBlur() {
     var hashtags = block.hashtag.value.toLowerCase().split(' ');
-    var comments = block.comment.value;
     var i = 0;
     var j = 0;
 
-    if (hashtags[0] === '' && comments === '') {
+    if (hashtags[0] === '') {
       return;
     }
 
@@ -57,6 +56,10 @@
         }
       }
     }
+  }
+
+  function onCommentsBlur() {
+    var comments = block.comment.value;
 
     if (comments.length >= config.maxCommentLength) {
       block.comment.setCustomValidity('Не более 140 символов!');
@@ -65,8 +68,8 @@
     }
   }
 
-  block.hashtag.addEventListener('blur', onFieldBlur);
-  block.comment.addEventListener('blur', onFieldBlur);
+  block.hashtag.addEventListener('blur', onHashtagBlur);
+  block.comment.addEventListener('blur', onCommentsBlur);
 
   block.hashtag.addEventListener('keydown', onInputEscPress);
   block.comment.addEventListener('keydown', onInputEscPress);
