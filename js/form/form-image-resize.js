@@ -21,25 +21,23 @@
   }
 
   function onImageGrow(input, action) {
-    var scaleSTR = input.value.split(-1);
-    var scaleNUM = parseFloat(scaleSTR);
+    var newScale = parseFloat(input.value.split(-1));
     var max = Math.round(scale.max - scale.step);
 
-    scaleNUM = (scaleNUM > max) ? scale.max : (scaleNUM + scale.step);
+    newScale = (newScale > max) ? scale.max : (newScale + scale.step);
 
-    input.value = scaleNUM + '%';
-    action(scaleNUM);
+    input.value = newScale + '%';
+    action(newScale);
   }
 
   function onImageShrink(input, action) {
-    var scaleSTR = input.value.split(-1);
-    var scaleNUM = parseFloat(scaleSTR);
+    var newScale = parseFloat(input.value.split(-1));
     var min = Math.round(scale.min + scale.step);
 
-    scaleNUM = (scaleNUM < min) ? scale.min : (scaleNUM - scale.step);
+    newScale = (newScale < min) ? scale.min : (newScale - scale.step);
 
-    input.value = scaleNUM + '%';
-    action(scaleNUM);
+    input.value = newScale + '%';
+    action(newScale);
   }
 
   formImageResize.init = init;

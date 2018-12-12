@@ -4,17 +4,20 @@
   var form = {};
   var config = window.config;
   var utils = window.utils;
+  var gallery = window.gallery;
+  var preview = window.preview;
   var formImage = window.formImage;
   var formImageResize = window.formImageResize;
   var backend = window.backend;
   var postResult = window.postResult;
   var url = 'https://js.dump.academy/kekstagram';
   var block = config.elements.imgUpload;
-  var imgForm = config.elements.imgUpload.form;
-  var hashtag = config.elements.imgUpload.hashtag;
-  var comment = config.elements.imgUpload.comment;
-  var radio = config.elements.imgUpload.effects;
-  var img = config.elements.imgUpload.img;
+  var imgForm = block.form;
+  var hashtag = block.hashtag;
+  var comment = block.comment;
+  var radio = block.effects;
+  var img = block.img;
+  var submitBtn = block.submit;
 
   function onEscPress(escEvt) {
     utils.isEscEvent(escEvt, close);
@@ -50,6 +53,7 @@
     openFile(evt);
 
     block.overlay.classList.remove('hidden');
+    submitBtn.disabled = false;
     document.addEventListener('keydown', onEscPress);
 
     block.close.addEventListener('click', close);
@@ -60,11 +64,24 @@
   }
 
   function onUpLoad() {
+    var newImg = {
+      url: img.src,
+      description: (comment.value + ' ' + hashtag.value),
+      comments: [],
+      likes: 0
+    };
     comment.value = '';
     hashtag.value = '';
     radio[0].checked = true;
     close();
     postResult.show('succes');
+
+    config.list.push(newImg);
+    newImg.DOMElement = gallery.renderPicture(newImg);
+    newImg.DOMElement.addEventListener('click', function () {
+      preview.open(newImg);
+    });
+    gallery.updatePicturesList(config.list);
   }
 
   function onError() {
@@ -74,6 +91,7 @@
 
   imgForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
+    submitBtn.disabled = true;
     backend.upload(url, new FormData(imgForm), onUpLoad, onError);
   });
 

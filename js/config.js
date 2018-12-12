@@ -105,7 +105,8 @@
         effectValue: '.effect-level__value',
         hashtag: '.text__hashtags',
         comment: '.text__description',
-        close: '.img-upload__cancel'
+        close: '.img-upload__cancel',
+        submit: '.img-upload__submit'
       },
       bigPicture: {
         root: '.big-picture',

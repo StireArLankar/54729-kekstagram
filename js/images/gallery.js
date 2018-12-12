@@ -127,6 +127,7 @@
   }
 
   gallery.renderMockList = renderMockList;
+  gallery.renderPicture = renderPicture;
   gallery.renderPicturesList = renderPicturesList;
   gallery.updatePicturesList = updatePicturesList;
   gallery.renderCommentsList = renderCommentsList;
