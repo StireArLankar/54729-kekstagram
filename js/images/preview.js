@@ -48,6 +48,12 @@
 
     bodyElem.classList.add('modal-open');
 
+    if (item.filter) {
+      block.img.style.filter = item.filter;
+    } else {
+      block.img.style.filter = '';
+    }
+
     block.img.src = item.url;
     block.likesCount.textContent = item.likes;
     block.commentsCount.textContent = item.comments.length;

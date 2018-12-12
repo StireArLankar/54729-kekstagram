@@ -64,12 +64,22 @@
   }
 
   function onUpLoad() {
+    var effectNumber = block.effectValue.value;
+    var effectName = Array.from(config.elements.imgUpload.effects).reduce(function (acc, cur) {
+      acc = cur.checked ? cur : acc;
+      return acc;
+    }, {}).value;
+    var eff = config.filter[effectName];
+    var filterEffect = effectName === 'none' ? '' : (eff.prefix + '(' + ((effectNumber / 100) * (eff.max - eff.min) + eff.min) + eff.postfix + ')');
+
     var newImg = {
       url: img.src,
       description: (comment.value + ' ' + hashtag.value),
       comments: [],
-      likes: 0
+      likes: 0,
+      filter: filterEffect
     };
+
     comment.value = '';
     hashtag.value = '';
     radio[0].checked = true;
@@ -78,6 +88,7 @@
 
     config.list.push(newImg);
     newImg.DOMElement = gallery.renderPicture(newImg);
+    newImg.DOMElement.style.filter = filterEffect;
     newImg.DOMElement.addEventListener('click', function () {
       preview.open(newImg);
     });
